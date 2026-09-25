@@ -5,7 +5,7 @@ const links = [
   { href: '/meetings', label: 'Meetings' },
 ];
 
-export default async function Header() {
+export default function Header() {
   return (
     <header className="border-line bg-surface border-b">
       <div className="flex p-5 sm:items-end sm:justify-between">
