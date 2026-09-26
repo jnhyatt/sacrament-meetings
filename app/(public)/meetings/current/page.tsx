@@ -6,7 +6,7 @@ import { currentSundayISO } from '@/lib/ward';
 export default async function CurrentMeetingPage() {
   await connection();
 
-  const [meeting] = getMeetings(currentSundayISO());
+  const [meeting] = await getMeetings({ date: currentSundayISO() });
   if (!meeting) {
     return <p>No meeting has been scheduled for this Sunday.</p>;
   }

@@ -6,7 +6,7 @@ import { getMeetingById } from '@/lib/meetings-db';
 export default async function MeetingPage({ params }: PageProps<'/meetings/[id]'>) {
   const { id } = await params;
 
-  const meeting = getMeetingById(Number(id));
+  const meeting = await getMeetingById(Number(id));
   if (!meeting) {
     notFound();
   }

@@ -14,5 +14,5 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  return Response.json(getMeetings(date));
+  return Response.json(await getMeetings({ date }));
 }

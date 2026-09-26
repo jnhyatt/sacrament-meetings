@@ -9,7 +9,7 @@ export async function GET(_request: NextRequest, ctx: RouteContext<'/api/meeting
     return Response.json({ error: 'Meeting id must be a valid number.' }, { status: 400 });
   }
 
-  const meeting = getMeetingById(Number(id));
+  const meeting = await getMeetingById(Number(id));
   if (!meeting) {
     return Response.json({ error: `Meeting ${id} was not found.` }, { status: 404 });
   }
