@@ -19,7 +19,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html lang="en" className={`${heading.variable} ${body.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <Header />
-        {children}
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

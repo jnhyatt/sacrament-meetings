@@ -30,7 +30,7 @@ export default function MeetingSearch() {
         placeholder="Search by speaker, leader, or meeting type..."
         defaultValue={searchParams.get('query') ?? ''}
         onChange={(e) => handleSearch(e.target.value)}
-        className="border-line bg-surface focus:border-accent w-full rounded-full border px-4 py-2 outline-none"
+        className="border-line bg-surface focus:border-accent w-full rounded-full border px-4 py-2"
         aria-label="Search meetings"
       />
     </div>
