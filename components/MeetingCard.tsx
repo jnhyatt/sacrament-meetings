@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import DeleteMeetingForm from '@/components/DeleteMeetingForm';
 import type { SacramentMeeting } from '@/lib/types';
 import { formatMeetingDate, meetingTypeLabels } from '@/lib/ward';
 
@@ -8,15 +9,16 @@ interface MeetingCardProps {
 
 export default function MeetingCard({ meeting }: MeetingCardProps) {
   const speakers = meeting.speakers.filter((s) => s.type === 'speaker');
+  const date = formatMeetingDate(meeting.date);
 
   return (
-    <Link
-      href={`/meetings/${meeting.id}`}
-      className={'rounded-card bg-surface shadow-card block h-full border p-5 no-underline'}
-    >
-      <article className="flex h-full flex-col gap-3">
+    <article className="rounded-card bg-surface shadow-card flex h-full flex-col border">
+      <Link
+        href={`/meetings/${meeting.id}`}
+        className="flex flex-1 flex-col gap-3 p-5 no-underline"
+      >
         <p className="heading">{meetingTypeLabels[meeting.meetingType]}</p>
-        <h2 className="text-2xl">{formatMeetingDate(meeting.date)}</h2>
+        <h2 className="text-2xl">{date}</h2>
         <dl className="grid grid-cols-[auto_1fr] gap-x-3 text-base">
           <dt className="text-muted">Conducting</dt>
           <dd>{meeting.conducting}</dd>
@@ -30,7 +32,17 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
                 : 'To be announced'}
           </dd>
         </dl>
-      </article>
-    </Link>
+      </Link>
+      <div className="border-line flex items-center gap-5 border-t px-5 py-3 text-base">
+        <Link
+          href={`/meetings/${meeting.id}/edit`}
+          aria-label={`Edit meeting on ${date}`}
+          className="text-primary hover:underline"
+        >
+          Edit
+        </Link>
+        <DeleteMeetingForm id={meeting.id} label={date} />
+      </div>
+    </article>
   );
 }

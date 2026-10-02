@@ -82,3 +82,49 @@ export async function getMeetingById(id: number): Promise<SacramentMeeting | nul
     WHERE id = ${id}`;
   return rows[0] ?? null;
 }
+
+export type MeetingInput = Omit<SacramentMeeting, 'id'>;
+
+export async function createMeeting(meeting: MeetingInput): Promise<number> {
+  const { rows } = await sql<{ id: number }>`
+    INSERT INTO meetings (
+      date, meeting_type, presiding, conducting, announcements,
+      opening_hymn, opening_prayer, ward_business, stake_business,
+      sacrament_hymn, speakers, closing_hymn, closing_prayer
+    )
+    VALUES (
+      ${meeting.date}::date, ${meeting.meetingType}, ${meeting.presiding}, ${meeting.conducting},
+      ARRAY(SELECT jsonb_array_elements_text(${JSON.stringify(meeting.announcements ?? [])}::jsonb)),
+      ${JSON.stringify(meeting.openingHymn)}::jsonb, ${meeting.openingPrayer},
+      ${JSON.stringify(meeting.wardBusiness)}::jsonb, ${meeting.stakeBusiness},
+      ${JSON.stringify(meeting.sacramentHymn)}::jsonb, ${JSON.stringify(meeting.speakers)}::jsonb,
+      ${JSON.stringify(meeting.closingHymn)}::jsonb, ${meeting.closingPrayer}
+    )
+    RETURNING id`;
+  return rows[0].id;
+}
+
+export async function updateMeeting(id: number, meeting: MeetingInput): Promise<boolean> {
+  const { rowCount } = await sql`
+    UPDATE meetings SET
+      date = ${meeting.date}::date,
+      meeting_type = ${meeting.meetingType},
+      presiding = ${meeting.presiding},
+      conducting = ${meeting.conducting},
+      announcements = ARRAY(SELECT jsonb_array_elements_text(${JSON.stringify(meeting.announcements ?? [])}::jsonb)),
+      opening_hymn = ${JSON.stringify(meeting.openingHymn)}::jsonb,
+      opening_prayer = ${meeting.openingPrayer},
+      ward_business = ${JSON.stringify(meeting.wardBusiness)}::jsonb,
+      stake_business = ${meeting.stakeBusiness},
+      sacrament_hymn = ${JSON.stringify(meeting.sacramentHymn)}::jsonb,
+      speakers = ${JSON.stringify(meeting.speakers)}::jsonb,
+      closing_hymn = ${JSON.stringify(meeting.closingHymn)}::jsonb,
+      closing_prayer = ${meeting.closingPrayer}
+    WHERE id = ${id}`;
+  return (rowCount ?? 0) > 0;
+}
+
+export async function deleteMeeting(id: number): Promise<boolean> {
+  const { rowCount } = await sql`DELETE FROM meetings WHERE id = ${id}`;
+  return (rowCount ?? 0) > 0;
+}

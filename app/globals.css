@@ -10,6 +10,7 @@
   --primary-contrast: #ffffff;
   --accent: #9a7a34;
   --line: #e2d9c6;
+  --danger: #a3332a;
 
   --space-page: clamp(1rem, 4vw, 2.5rem);
   --space-section: clamp(2.5rem, 6vw, 4.5rem);
@@ -28,6 +29,7 @@
     --primary-contrast: #11141b;
     --accent: #d2af66;
     --line: #2e3544;
+    --danger: #f19488;
   }
 }
 
@@ -41,6 +43,7 @@
   --color-primary-contrast: var(--primary-contrast);
   --color-accent: var(--accent);
   --color-line: var(--line);
+  --color-danger: var(--danger);
 
   --font-serif: var(--font-body), Georgia, 'Times New Roman', serif;
   --font-display: var(--font-heading), Georgia, serif;

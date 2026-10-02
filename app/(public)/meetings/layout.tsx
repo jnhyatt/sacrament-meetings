@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const links = [
   { href: '/meetings', label: 'All meetings', exact: true },
   { href: '/meetings/current', label: 'This Sunday' },
+  { href: '/meetings/new', label: 'New meeting' },
 ];
 
 export default function MeetingsLayout({ children }: LayoutProps<'/meetings'>) {
