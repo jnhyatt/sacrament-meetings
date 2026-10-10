@@ -1,9 +1,22 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import EditMeetingForm from '@/components/EditMeetingForm';
 import { requireUser } from '@/lib/dal';
 import { getMeetingById } from '@/lib/meetings-db';
 import { formatMeetingDate } from '@/lib/ward';
+
+export async function generateMetadata({
+  params,
+}: PageProps<'/meetings/[id]/edit'>): Promise<Metadata> {
+  const { id } = await params;
+  const meeting = await getMeetingById(Number(id));
+  if (!meeting) {
+    return {};
+  }
+
+  return { title: `Edit ${formatMeetingDate(meeting.date)}` };
+}
 
 export default async function EditMeetingPage({ params }: PageProps<'/meetings/[id]/edit'>) {
   await requireUser();

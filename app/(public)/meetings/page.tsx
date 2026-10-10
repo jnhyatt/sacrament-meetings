@@ -1,9 +1,15 @@
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { auth } from '@/auth';
 import MeetingCard from '@/components/MeetingCard';
 import MeetingSearch from '@/components/MeetingSearch';
 import { Pagination } from '@/components/Pagination';
 import { getMeetingsPage } from '@/lib/meetings-db';
+
+export const metadata: Metadata = {
+  title: 'Meeting Agendas',
+  description: 'Browse past and upcoming sacrament meeting agendas.',
+};
 
 export default async function MeetingsPage({ searchParams }: PageProps<'/meetings'>) {
   const { query, page } = await searchParams;

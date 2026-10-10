@@ -1,7 +1,12 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import CreateMeetingForm from '@/components/CreateMeetingForm';
 import { requireUser } from '@/lib/dal';
 import { currentSundayISO } from '@/lib/ward';
+
+export const metadata: Metadata = {
+  title: 'New Meeting',
+};
 
 export default async function NewMeetingPage() {
   await requireUser();

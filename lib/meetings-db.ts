@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { sql } from '@vercel/postgres';
 import type { SacramentMeeting } from './types';
 
@@ -70,7 +71,7 @@ async function queryMeetings(
   return rows;
 }
 
-export async function getMeetingById(id: number): Promise<SacramentMeeting | null> {
+export const getMeetingById = cache(async (id: number): Promise<SacramentMeeting | null> => {
   const { rows } = await sql<SacramentMeeting>`
     SELECT id, to_char(date, 'YYYY-MM-DD') AS date, meeting_type AS "meetingType",
       presiding, conducting, announcements,
@@ -81,7 +82,7 @@ export async function getMeetingById(id: number): Promise<SacramentMeeting | nul
     FROM meetings
     WHERE id = ${id}`;
   return rows[0] ?? null;
-}
+});
 
 export type MeetingInput = Omit<SacramentMeeting, 'id'>;
 

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Cormorant_Garamond, EB_Garamond } from 'next/font/google';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -13,6 +14,11 @@ const body = EB_Garamond({
   variable: '--font-body',
   subsets: ['latin'],
 });
+
+export const metadata: Metadata = {
+  title: { template: '%s | Mountain Point 6th Ward', default: 'Mountain Point 6th Ward' },
+  description: 'Sacrament meeting agendas for the Mountain Point 6th Ward.',
+};
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
