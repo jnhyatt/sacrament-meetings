@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import CreateMeetingForm from '@/components/CreateMeetingForm';
+import { requireUser } from '@/lib/dal';
 import { currentSundayISO } from '@/lib/ward';
 
-export default function NewMeetingPage() {
+export default async function NewMeetingPage() {
+  await requireUser();
+
   return (
     <div className="max-w-content px-page mx-auto pt-8">
       <Link

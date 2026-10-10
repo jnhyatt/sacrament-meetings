@@ -5,9 +5,10 @@ import { formatMeetingDate, meetingTypeLabels } from '@/lib/ward';
 
 interface MeetingCardProps {
   meeting: SacramentMeeting;
+  canEdit: boolean;
 }
 
-export default function MeetingCard({ meeting }: MeetingCardProps) {
+export default function MeetingCard({ meeting, canEdit }: MeetingCardProps) {
   const speakers = meeting.speakers.filter((s) => s.type === 'speaker');
   const date = formatMeetingDate(meeting.date);
 
@@ -33,16 +34,18 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
           </dd>
         </dl>
       </Link>
-      <div className="border-line flex items-center gap-5 border-t px-5 py-3 text-base">
-        <Link
-          href={`/meetings/${meeting.id}/edit`}
-          aria-label={`Edit meeting on ${date}`}
-          className="text-primary hover:underline"
-        >
-          Edit
-        </Link>
-        <DeleteMeetingForm id={meeting.id} label={date} />
-      </div>
+      {canEdit && (
+        <div className="border-line flex items-center gap-5 border-t px-5 py-3 text-base">
+          <Link
+            href={`/meetings/${meeting.id}/edit`}
+            aria-label={`Edit meeting on ${date}`}
+            className="text-primary hover:underline"
+          >
+            Edit
+          </Link>
+          <DeleteMeetingForm id={meeting.id} label={date} />
+        </div>
+      )}
     </article>
   );
 }

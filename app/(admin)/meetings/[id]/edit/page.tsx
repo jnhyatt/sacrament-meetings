@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import EditMeetingForm from '@/components/EditMeetingForm';
+import { requireUser } from '@/lib/dal';
 import { getMeetingById } from '@/lib/meetings-db';
 import { formatMeetingDate } from '@/lib/ward';
 
 export default async function EditMeetingPage({ params }: PageProps<'/meetings/[id]/edit'>) {
+  await requireUser();
   const { id } = await params;
 
   const meetingId = Number(id);

@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { requireUser } from './dal';
 import * as db from './meetings-db';
 import type { MeetingFormValues, State } from './meeting-form';
 
@@ -134,6 +135,8 @@ function duplicateDate(values: MeetingFormValues): State {
 }
 
 export async function createMeeting(prevState: State, formData: FormData): Promise<State> {
+  await requireUser();
+
   const values = readFormValues(formData);
   const validated = MeetingFormSchema.safeParse(values);
   if (!validated.success) {
@@ -159,6 +162,8 @@ export async function updateMeeting(
   prevState: State,
   formData: FormData
 ): Promise<State> {
+  await requireUser();
+
   const meetingId = MeetingIdSchema.safeParse(id);
   if (!meetingId.success) {
     return { message: 'This meeting could not be found.', errors: {} };
@@ -194,6 +199,8 @@ export async function updateMeeting(
 }
 
 export async function deleteMeeting(formData: FormData): Promise<void> {
+  await requireUser();
+
   const meetingId = MeetingIdSchema.safeParse(formData.get('id'));
   if (!meetingId.success) {
     throw new Error('That meeting could not be found.');

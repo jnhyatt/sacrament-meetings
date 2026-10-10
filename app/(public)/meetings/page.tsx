@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { auth } from '@/auth';
 import MeetingCard from '@/components/MeetingCard';
 import MeetingSearch from '@/components/MeetingSearch';
 import { Pagination } from '@/components/Pagination';
@@ -9,7 +10,10 @@ export default async function MeetingsPage({ searchParams }: PageProps<'/meeting
   const search = typeof query === 'string' ? query : undefined;
   const currentPage = Number(page) || 1;
 
-  const { meetings, totalPages } = await getMeetingsPage({ query: search, page: currentPage });
+  const [session, { meetings, totalPages }] = await Promise.all([
+    auth(),
+    getMeetingsPage({ query: search, page: currentPage }),
+  ]);
 
   return (
     <>
@@ -24,7 +28,7 @@ export default async function MeetingsPage({ searchParams }: PageProps<'/meeting
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {meetings.map((meeting) => (
             <li key={meeting.id}>
-              <MeetingCard meeting={meeting} />
+              <MeetingCard meeting={meeting} canEdit={!!session?.user} />
             </li>
           ))}
         </ul>

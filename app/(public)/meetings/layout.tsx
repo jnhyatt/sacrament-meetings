@@ -1,16 +1,16 @@
-'use client';
+import { auth } from '@/auth';
+import MeetingsNav from '@/components/MeetingsNav';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-const links = [
-  { href: '/meetings', label: 'All meetings', exact: true },
+const publicLinks = [
+  { href: '/meetings', label: 'All meetings' },
   { href: '/meetings/current', label: 'This Sunday' },
-  { href: '/meetings/new', label: 'New meeting' },
 ];
 
-export default function MeetingsLayout({ children }: LayoutProps<'/meetings'>) {
-  const pathname = usePathname();
+const adminLinks = [{ href: '/meetings/new', label: 'New meeting' }];
+
+export default async function MeetingsLayout({ children }: LayoutProps<'/meetings'>) {
+  const session = await auth();
+  const links = session?.user ? [...publicLinks, ...adminLinks] : publicLinks;
 
   return (
     <div className="max-w-content px-page mx-auto pt-8">
@@ -19,24 +19,7 @@ export default function MeetingsLayout({ children }: LayoutProps<'/meetings'>) {
           <p className="heading">Sacrament Meetings</p>
           <h1 className="mt-1 text-3xl">Meeting Agendas</h1>
         </div>
-        <nav>
-          <ul className="flex flex-wrap gap-2">
-            {links.map((link) => {
-              const active = pathname === link.href;
-              return (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    aria-current={active ? 'page' : undefined}
-                    className="hover:border-accent hover:text-foreground rounded-full border px-4 py-1.5 text-base"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        <MeetingsNav links={links} />
       </div>
       {children}
     </div>
